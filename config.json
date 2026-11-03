@@ -5,6 +5,7 @@
     "Jio": "images/no_chance.jpg"
   },
   "scenes": {
+    "start": "images/landing.jpg",
     "q0": "images/sunday.jpg",
     "f0": "images/graduation.jpg",
     "q1": "images/chat.jpg",
@@ -24,4 +25,5 @@
     "fact": ["sounds/chime.mp3"],
     "result": ["sounds/fanfare.mp3"]
   }
+  
 }
