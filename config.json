@@ -17,9 +17,9 @@
     "f5": "images/fact-1.jpg"
   },
   "sounds": {
-    "question": ["sound/ANMLDog_Barking dog 2 (ID 2954)_BigSoundBank.com-[AudioTrimmer.com].mp3", "sounds/woof.mp3", "sounds/ding.mp3", "sounds/Dog Barking Accents by Countries_cut_0-10-0-13.mp3", "sounds/Dog Barking Accents by Countries_cut_0-23-0-25.mp3"],
-    "start": ["sound/fanfare.mp3"],
-    "fact": ["sound/chime.mp3"],
-    "result": ["sound/fanfare.mp3"]
+    "question": ["sounds/ANMLDog_Barking dog 2 (ID 2954)_BigSoundBank.com-[AudioTrimmer.com].mp3", "sounds/woof.mp3", "sounds/ding.mp3", "sounds/Dog Barking Accents by Countries_cut_0-10-0-13.mp3", "sounds/Dog Barking Accents by Countries_cut_0-23-0-25.mp3"],
+    "start": ["sounds/fanfare.mp3"],
+    "fact": ["sounds/chime.mp3"],
+    "result": ["sounds/fanfare.mp3"]
   }
 }

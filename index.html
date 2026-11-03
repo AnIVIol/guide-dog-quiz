@@ -152,7 +152,7 @@ var QS=[
 ["💼","You worked hard for something and didn’t get it. How do you react?",[["I review what went wrong, adjust calmly and try again.",0],["I sulk a bit, have a snack, then try again.",1],["I decide it was never my thing and chase a new idea.",2],["I complain loudly, then take a nap.",3]],"🏠","Dogs that don’t pass aren’t forgotten. The school keeps them in a heated boarding kennel and runs adoption programs, so they can find loving families."]
 ];
 QS.forEach(function(q,i){q[5]=String(i)});var DEFAULT_QS=JSON.parse(JSON.stringify(QS)),DEFAULT_DOGS=JSON.parse(JSON.stringify(DOGS)),perQuiz=6,snd={on:true,vol:0.6,ev:{start:{list:[]},question:{list:[{t:"pop"},{t:"boop"},{t:"sparkle"}]},fact:{list:[{t:"chime"}]},result:{list:[{t:"fanfare"}]}}},actx=null,bufs=new Map(),lastIdx={},BUILTIN=[["chime","Chime"],["pop","Pop"],["fanfare","Fanfare"],["woof","Woof"],["boop","Boop"],["sparkle","Sparkle"],["bark","Bark"],["whoosh","Whoosh"],["ding","Ding"]],EVS=[["question","“Next question” click (one plays at random)"],["start","Quiz starts (Start / Restart button)"],["fact","Fun fact appears"],["result","Result appears"]];
-var KEY="gd-quiz-v1", imgs=[null,null,null,null], sizes=[200,200,200,200], scn={};
+var KEY="gd-quiz-v1", imgs=[null,null,null,null], sizes=[200,200,200,200], scn={}, repoDogs={}, repoScn={}, repoSnd={};
 var st={screen:"start",i:0,order:[],picks:[],last:null};
 var app=document.getElementById("app"), topBtn=document.getElementById("restartTop");
 
@@ -200,22 +200,26 @@ function playItem(item){
   else if(item.t==="bark"){note(220,0,.1,"square",120);note(200,.14,.12,"square",90)}
   else if(item.t==="whoosh"){note(200,0,.3,"triangle",900)}
   else if(item.t==="ding"){note(1047,0,.7)}
+  else if(item.t==="file"&&item.url){
+   var pf=function(buf){var src=actx.createBufferSource(),g=actx.createGain();src.buffer=buf;g.gain.value=v;src.connect(g);g.connect(actx.destination);src.start()};
+   if(bufs.has(item))pf(bufs.get(item));
+   else (item.ab?Promise.resolve(item.ab):fetch(item.url).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()})).then(function(ab){actx.decodeAudioData(ab.slice(0),function(buf){bufs.set(item,buf);pf(buf)},function(){})}).catch(function(){})}
   else if(item.t==="custom"&&item.data){
    var play=function(buf){var src=actx.createBufferSource(),g=actx.createGain();src.buffer=buf;g.gain.value=v;src.connect(g);g.connect(actx.destination);src.start()};
    if(bufs.has(item))play(bufs.get(item));else actx.decodeAudioData(b64buf(item.data),function(buf){bufs.set(item,buf);play(buf)},function(){})}
  }catch(e){}}
-function playSfx(ev,force){var c=snd.ev[ev];if(!c||!c.list.length||(!force&&!snd.on))return;
- var n=c.list.length,i=Math.floor(Math.random()*n);
+function playSfx(ev,force){var c=snd.ev[ev];var all=(repoSnd[ev]&&repoSnd[ev].length)?repoSnd[ev]:(c?c.list:[]);if(!c||!all.length||(!force&&!snd.on))return;
+ var n=all.length,i=Math.floor(Math.random()*n);
  if(n>1&&i===lastIdx[ev])i=(i+1+Math.floor(Math.random()*(n-1)))%n;
- lastIdx[ev]=i;playItem(c.list[i])}
+ lastIdx[ev]=i;playItem(all[i])}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({imgs:imgs,sizes:sizes,scn:scn,qs:QS,nq:perQuiz,dogs:DOGS,snd:snd}))}catch(e){}}
 function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
 function pic(i){var s=sizes[i],e;
- if(imgs[i]){e=el("img","pic");e.src=imgs[i];e.alt=DOGS[i].name+" the "+DOGS[i].breed;e.style.width="100%";e.style.height="auto";e.style.maxHeight="60vh";e.style.objectFit="contain"}
+ if(dimg(i)){e=el("img","pic");e.src=dimg(i);e.alt=DOGS[i].name+" the "+DOGS[i].breed;e.style.width="100%";e.style.height="auto";e.style.maxHeight="60vh";e.style.objectFit="contain"}
  else{e=el("div","ph",DOGS[i].emoji);e.style.width=s+"px";e.style.height=s+"px"}
  return e}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
-function scene(e,h,key){var d=el("div","scene");d.style.background="linear-gradient(135deg,hsl("+h+" 80% 60% / .28),hsl("+((h+50)%360)+" 80% 60% / .28))";if(key&&scn[key]){var im=el("img");im.src=scn[key];im.alt="";d.classList.add("hasimg");d.appendChild(im)}else d.appendChild(el("span",null,e));return d}
+function scene(e,h,key){var d=el("div","scene");d.style.background="linear-gradient(135deg,hsl("+h+" 80% 60% / .28),hsl("+((h+50)%360)+" 80% 60% / .28))";if(key&&simg(key)){var im=el("img");im.src=simg(key);im.alt="";d.classList.add("hasimg");d.appendChild(im)}else d.appendChild(el("span",null,e));return d}
 function usable(q){return q[1].trim()&&q[2].filter(function(o){return o[0].trim()}).length>=2}
 function pool(){var p=[];QS.forEach(function(q,i){if(usable(q))p.push(i)});return p}
 function nQ(){return Math.max(1,Math.min(perQuiz,pool().length))}
@@ -303,7 +307,7 @@ topBtn.onclick=restart;
 
 /* ---- photo uploads ---- */
 var upBox=document.getElementById("uploads"),thumbs=[],upLabels=[];
-function updThumb(i){var t=thumbs[i];t.innerHTML="";if(imgs[i]){var im=el("img");im.src=imgs[i];im.alt=DOGS[i].name;t.appendChild(im)}else t.textContent=DOGS[i].emoji}
+function updThumb(i){var t=thumbs[i];t.innerHTML="";if(dimg(i)){var im=el("img");im.src=dimg(i);im.alt=DOGS[i].name;t.appendChild(im)}else t.textContent=DOGS[i].emoji}
 function resizeFile(file,cb,M0){
  if(!file||!/^image\//.test(file.type)){alert("Please choose an image file.");return}
  var fr=new FileReader();
@@ -336,7 +340,7 @@ function inFlow(){return st.screen==="q"||st.screen==="fact"}
 function shortT(t){return t.length>48?t.slice(0,46)+"…":t}
 function scSlot(key,label,emoji){
  var box=el("div","slot"),th=el("div","th");
- function upd(){th.innerHTML="";if(scn[key]){var im=el("img");im.src=scn[key];im.alt=label;th.appendChild(im)}else th.textContent=emoji}
+ function upd(){th.innerHTML="";if(simg(key)){var im=el("img");im.src=simg(key);im.alt=label;th.appendChild(im)}else th.textContent=emoji}
  scUpd[key]=upd;upd();
  var col=el("div");col.appendChild(el("div","mute",label));
  var fi=document.createElement("input");fi.type="file";fi.accept="image/*";
@@ -412,6 +416,7 @@ function anyOn(){return EVS.some(function(e){return snd.ev[e[0]].list.length>0})
 function customSize(){var n=0;EVS.forEach(function(e){snd.ev[e[0]].list.forEach(function(it){if(it.data)n+=it.data.length})});return n}
 function syncSnd(){sV.value=snd.vol;var on=snd.on&&anyOn();sB.textContent=on?"🔊":"🔇";sB.setAttribute("aria-label",on?"Mute sound":"Turn sound on")}
 function buildSndRows(){sRows.innerHTML="";if(sndMsg){var mb=el("div","fact");mb.textContent=sndMsg;sRows.appendChild(mb)}
+ var rk=Object.keys(repoSnd).filter(function(k){return repoSnd[k].length});if(rk.length){var rb2=el("div","fact");rb2.textContent="config.json in the repo sets sounds for: "+rk.join(", ")+". Those are used instead of the lists below.";sRows.appendChild(rb2)}
  EVS.forEach(function(e){var k=e[0],c=snd.ev[k],row=el("div","qcard");
   row.appendChild(el("b",null,e[1]));
   var chips=el("div");chips.style.margin="6px 0";
@@ -475,6 +480,20 @@ document.getElementById("adminLock").onclick=function(){adminOK=false;try{sessio
 document.getElementById("adminLink").onclick=function(e){e.preventDefault();goAdmin()};
 window.addEventListener("hashchange",function(){var a=location.hash==="#admin";if(a!==adminView){adminView=a;showView();if(!a)toStart()}});
 adminView=location.hash==="#admin";showView();
+/* ---- repo config: images and sounds from config.json ---- */
+function okPath(u){return typeof u==="string"&&/^[\w\-. %\/]+$/.test(u)&&u.indexOf("..")<0&&u.charAt(0)!=="/"}
+function dimg(i){return imgs[i]||(DOGS[i]&&repoDogs[DOGS[i].name])||null}
+function simg(k){return scn[k]||repoScn[k]||null}
+function applyCfg(cfg){
+ if(cfg.dogs&&typeof cfg.dogs==="object")Object.keys(cfg.dogs).forEach(function(k){if(okPath(cfg.dogs[k]))repoDogs[k]=cfg.dogs[k]});
+ if(cfg.scenes&&typeof cfg.scenes==="object")Object.keys(cfg.scenes).forEach(function(k){if(okPath(cfg.scenes[k]))repoScn[k]=cfg.scenes[k]});
+ if(cfg.sounds&&typeof cfg.sounds==="object")EVS.forEach(function(e){var a=cfg.sounds[e[0]];if(!Array.isArray(a))return;
+  repoSnd[e[0]]=a.filter(okPath).slice(0,12).map(function(u){var it={t:"file",url:u,name:u.split("/").pop()};
+   fetch(u).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(ab){it.ab=ab}).catch(function(){var L=repoSnd[e[0]],ix=L?L.indexOf(it):-1;if(ix>=0)L.splice(ix,1)});return it})});
+ if(typeof thumbs!=="undefined")DOGS.forEach(function(d,i){if(thumbs[i])updThumb(i)});
+ if(typeof scUpd!=="undefined")Object.keys(scUpd).forEach(function(k){scUpd[k]()});
+ buildSndRows();render()}
+try{fetch("config.json",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(applyCfg).catch(function(){})}catch(e){}
 render();
 </script>
 </body>
