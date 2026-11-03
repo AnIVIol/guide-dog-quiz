@@ -6,15 +6,17 @@
   },
   "scenes": {
     "q0": "images/sunday.jpg",
-    "f0": "images/fact-1.jpg",
-    "q1": "images/drooling.jpg",
-    "f1": "images/fact-1.jpg",
-    "q2": "images/scared.jpg",
-    "f2": "images/fact-1.jpg",
-    "q3": "images/dog working.jpg",
-    "f4": "images/fact-1.jpg",
+    "f0": "images/graduation.jpg",
+    "q1": "images/chat.jpg",
+    "f1": "images/distracted.jpg",
+    "q2": "images/drooling.jpg",
+    "f2": "images/reinforcement.jpg",
+    "q3": "images/scared.jpg",
+    "f3": "images/shopping.jpg",
+    "q4": "images/dog working.jpg",
+    "f4": "images/bada.jpg",
     "q5": "images/disappointed.jpg",
-    "f5": "images/fact-1.jpg"
+    "f5": "images/bada.jpg"
   },
   "sounds": {
     "question": ["sounds/ANMLDog_Barking dog 2 (ID 2954)_BigSoundBank.com-[AudioTrimmer.com].mp3", "sounds/woof.mp3", "sounds/ding.mp3", "sounds/Dog Barking Accents by Countries_cut_0-10-0-13.mp3", "sounds/Dog Barking Accents by Countries_cut_0-23-0-25.mp3"],
