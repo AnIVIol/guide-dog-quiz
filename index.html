@@ -224,7 +224,7 @@ function usable(q){return q[1].trim()&&q[2].filter(function(o){return o[0].trim(
 function pool(){var p=[];QS.forEach(function(q,i){if(usable(q))p.push(i)});return p}
 function nQ(){return Math.max(1,Math.min(perQuiz,pool().length))}
 function begin(){var p=pool();if(!p.length){alert("Add at least one complete question (a question and 2+ answers) first.");return}
- if(p.length>nQ())p=shuffle(p).slice(0,nQ());
+ if(p.length>nQ()){var keep=shuffle(p).slice(0,nQ());p=p.filter(function(x){return keep.indexOf(x)>-1})}
  st={screen:"q",i:0,order:p,picks:[],last:null};render();playSfx("start")}
 function render(){app.innerHTML="";document.querySelector(".wrap").classList.toggle("wide",st.screen==="result");topBtn.classList.toggle("hidden",st.screen==="start");
  var c=el("div","card");app.appendChild(c);
