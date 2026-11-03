@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Which Guide Dog Are You?</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2622;--mute:#6f665d;--line:#e6dfd5;--accent:#d9822b;--accent-ink:#fff;--soft:#fbeedd;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1917;--card:#292422;--ink:#f3ede6;--mute:#b0a69b;--line:#3d3631;--accent:#f0a04b;--accent-ink:#1c1917;--soft:#3a2e22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1917;--card:#292422;--ink:#f3ede6;--mute:#b0a69b;--line:#3d3631;--accent:#f0a04b;--accent-ink:#1c1917;--soft:#3a2e22;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+header b{font-size:15px;letter-spacing:.02em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+h1{font-size:26px;line-height:1.2;margin:0 0 10px}
+h2{font-size:20px;line-height:1.3;margin:0 0 16px}
+p{margin:0 0 12px}
+.mute{color:var(--mute);font-size:14px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:11px 20px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 12px;font-size:14px}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:10px}
+.opt:hover{border-color:var(--accent)}
+.bar{height:6px;background:var(--line);border-radius:4px;margin-bottom:16px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.fact{background:var(--soft);border-radius:12px;padding:14px;margin:14px 0}
+.fact b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;color:var(--accent)}
+.center{text-align:center}
+.pic{display:block;margin:0 auto 14px;border-radius:16px;object-fit:cover;max-width:100%}
+.ph{display:flex;align-items:center;justify-content:center;background:var(--soft);font-size:64px;border-radius:16px;margin:0 auto 14px;max-width:100%}
+.tier{display:inline-block;background:var(--soft);color:var(--accent);border-radius:20px;padding:3px 12px;font-size:13px;font-weight:600;margin-bottom:8px}
+.traits{list-style:none;padding:0;margin:12px 0;text-align:left}
+.traits li{padding:4px 0 4px 22px;position:relative}
+.traits li:before{content:"🐾";position:absolute;left:0;font-size:13px;top:6px}
+.row{display:grid;grid-template-columns:110px 1fr 24px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.row .t{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.row .t i{display:block;height:100%;background:var(--accent)}
+details{margin-top:16px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+.up{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.up:first-of-type{border-top:0}
+.up .th{width:72px;height:72px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:30px;overflow:hidden}
+.up .th img{width:100%;height:100%;object-fit:cover}
+.up label.sz{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--mute);margin-top:6px}
+.up input[type=range]{flex:1;min-width:0}
+.up input[type=file]{font-size:13px;max-width:100%}
+.hidden{display:none}
+.scene img{width:100%;height:100%;object-fit:cover}
+.guide{text-align:left;margin-top:24px;border-top:1px solid var(--line);padding-top:18px}
+.guide h3{margin:0 0 10px;font-size:18px;line-height:1.3}
+.guide ol{padding-left:20px;margin:6px 0 14px}.guide li{margin:6px 0}
+.qrow{padding:12px 0;border-top:1px solid var(--line)}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.slot{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center}
+.slot .th{width:64px;height:64px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden}
+.slot .th img{width:100%;height:100%;object-fit:cover}
+.slot input[type=file]{font-size:12px;max-width:100%;margin:4px 0;display:block}
+@media(max-width:480px){.slots{grid-template-columns:1fr}}
+.wrap.wide{max-width:1040px}
+.up label.sz{display:none!important}
+.scene.hasimg{height:auto;max-height:60vh}
+.scene.hasimg img{width:100%;height:auto;max-height:60vh;object-fit:contain}
+.wrap.wide>details{max-width:560px;margin-left:auto;margin-right:auto}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.rgrid .guide{margin-top:0;border-top:0;padding-top:0}
+@media(max-width:760px){.rgrid{grid-template-columns:1fr}}
+.qcard{border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0}
+.qh{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+.qh .warn{flex:1;font-size:12px;color:var(--accent)}
+.arow{display:grid;grid-template-columns:1fr 170px;gap:8px;margin:6px 0}
+.erow{display:grid;grid-template-columns:70px 1fr;gap:8px;margin:6px 0}
+#editor input[type=text],#editor textarea,#editor select,#editor input[type=number]{width:100%;font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+#editor input[type=number]{width:70px}
+@media(max-width:480px){.arow{grid-template-columns:1fr}}
+.srow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:8px 0}
+#soundPanel select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+#dogEditor input[type=text],#dogEditor textarea{width:100%;font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.drow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:20px;padding:2px 4px 2px 10px;margin:4px 6px 4px 0;font-size:13px;background:var(--bg)}
+.chip button{border:0;background:transparent;color:var(--ink);cursor:pointer;font-size:13px;padding:2px 5px}
+.scene{height:150px;overflow:hidden;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:56px;margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><b>🦮 Guide Dog Quiz</b><div style="display:flex;gap:8px"><button class="btn ghost sm" id="sndBtn" aria-label="Toggle sound">🔊</button><button class="btn ghost sm hidden" id="restartTop">Restart</button></div></header>
+  <main id="app"></main>
+  <div id="adminGate" class="hidden"></div>
+  <div id="adminBox" class="hidden">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px"><b>🔒 Admin settings</b><span><button class="btn ghost sm" id="adminLock">Lock</button> <button class="btn sm" id="adminExit">Back to quiz</button></span></div>
+  <details id="photos">
+    <summary>Dog photos (upload &amp; resize)</summary>
+    <p class="mute" style="margin-top:10px">Upload a picture for each dog. Images keep their original proportions and scale to fit the screen.</p>
+    <div id="uploads"></div>
+    <button class="btn ghost sm" id="clearPics">Remove all photos</button>
+  </details>
+  <details id="soundPanel" open>
+    <summary>Sound effects</summary>
+    <p class="mute" style="margin-top:10px">Pick sounds for each moment of the quiz. Add several to a moment and a random one plays each time. Visitors can mute everything with the speaker button at the top of the page.</p>
+    <div class="srow"><label>Volume <input type="range" id="sndVol" min="0" max="1" step="0.05"></label></div>
+    <div id="sndRows"></div>
+  </details>
+  <details id="dogPanel">
+    <summary>Add, edit or remove dogs</summary>
+    <p class="mute" style="margin-top:10px">Use 2 to 8 dogs. Removing a dog moves its answers to a neighboring dog. Adding, removing or resetting returns you to the start screen.</p>
+    <div id="dogEditor"></div>
+  </details>
+  <details id="editPanel">
+    <summary>Edit questions, answers &amp; fun facts</summary>
+    <p class="mute" style="margin-top:10px">Changes save automatically in this browser. Adding, deleting or resetting questions returns you to the start screen.</p>
+    <div id="editor"></div>
+  </details>
+  <details id="scenePanel">
+    <summary>Question &amp; fun-fact pictures</summary>
+    <p class="mute" style="margin-top:10px">Replace the emoji banner on any question or fun-fact screen with your own picture. Images keep their original proportions and scale to fit the screen.</p>
+    <div id="scenes"></div>
+    <button class="btn ghost sm" id="clearScenes">Reset all to emoji</button>
+  </details>
+  </div>
+  <p id="credits" class="mute" style="margin-top:20px">Fun facts come from the Samsung Fire &amp; Marine Insurance Guide Dog School website, <a href="https://www.guidedog.co.kr/" target="_blank" rel="noopener">guidedog.co.kr</a>, and are the school’s own statements.</p>
+  <p class="mute" id="adminFoot" style="text-align:center;font-size:12px"><a href="#admin" id="adminLink">Admin</a></p>
+</div>
+<script>
+"use strict";
+function ask(msg,yes){var ov=el("div");ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50";var bx=el("div","card");bx.style.maxWidth="380px";bx.appendChild(el("p",null,msg));var r=el("div");r.style.cssText="display:flex;gap:8px;justify-content:flex-end";if(yes){var no=el("button","btn ghost sm","Cancel");no.onclick=function(){ov.remove()};r.appendChild(no)}var ok=el("button","btn sm",yes?"Confirm":"OK");ok.onclick=function(){ov.remove();if(yes)yes()};r.appendChild(ok);bx.appendChild(r);ov.appendChild(bx);document.body.appendChild(ov)}
+window.alert=function(m){ask(String(m))};
+var DOGS=[
+{name:"Pyeongdeung",breed:"Golden Retriever",tier:"Best guide dog",emoji:"🦮",
+ line:"Calm, steady and born to work. You’re the dog every guide dog school dreams about.",
+ traits:["Organized: keeps a routine and sticks to it","Focused: tunes out the noise when it’s time to work","Reliable and calm under pressure","Still warm and friendly once the harness comes off"]},
+{name:"Modu",breed:"Labrador",tier:"Barely passing",emoji:"🐕",
+ line:"Loyal, willing and full of heart. You get the job done, but squirrels and snacks are a constant test.",
+ traits:["Fairly organized, with plans that bend easily","Focuses well until something exciting appears","Easily motivated, especially by food and praise","Needs a little coaching to stay on track"]},
+{name:"Leo",breed:"Dachshund",tier:"Flunked out",emoji:"🌭",
+ line:"Curious, stubborn and a born explorer. Your nose has its own agenda, and it usually wins.",
+ traits:["Great ideas, loose follow-through","Follows interesting smells instead of the route","Strong-willed: prefers to do things his own way","Brilliant at adventures, not at schedules"]},
+{name:"Jio",breed:"Chihuahua",tier:"No chance",emoji:"🐩",
+ line:"Big personality, tiny attention span for rules. You live fully in the moment and the moment is nap time.",
+ traits:["Spontaneous: schedules are more like suggestions","Easily startled or distracted","Loudly opinionated about everything","Happiest being carried, not leading the way"]}
+];
+var QS=[
+["📅","It’s Saturday morning. How do you approach your day?",[["I have a loose plan, but I’ll bend it if something fun comes up.",1],["Plan? I’ll wake up when I wake up and see what happens.",3],["I have a clear schedule and I follow it.",0],["I start with a plan, then follow whatever looks interesting.",2]],"📊","Not every dog makes it. Samsung Guide Dog School’s success rate is reported to hover around 35%, and the school trains roughly 15 guide dogs a year."],
+["💻","You’re deep in a task and a friend starts chatting right next to you. You…",[["Pause, answer, then lose my place for a while.",2],["Say “give me ten minutes” and keep working.",0],["Finish my sentence, then happily chat a bit.",1],["Chat away. The task can wait. Or can it? Ooh, a notification!",3]],"🏡","Concentration is taught early. During “puppy walking,” volunteers spend about a year teaching pups to bond, focus, sit and walk calmly on a leash before formal training begins."],
+["🥐","You walk past a bakery with a wonderful smell. What happens?",[["I notice it, appreciate it, and keep walking to where I’m going.",0],["I stop for a treat. I’ll be quick. Probably.",1],["I’m already inside and I’ve forgotten where I was heading.",2],["I want to be carried in, please.",3]],"🦴","Trainers at the school use positive reinforcement, rewarding the behavior they want instead of punishing the rest, so a good dog learns that focus pays off."],
+["🔊","A loud, unexpected noise goes off near you. Your reaction?",[["Startled, but I recover almost instantly and carry on.",0],["I look around, shout, and take a minute to settle.",3],["Curious. I wander over to investigate.",2],["I jump, then shake it off after a moment.",1]],"🚌","Socialization is a must for guide dogs. Puppy walkers take their pups into everyday places, and dogs in training are legally allowed into public spaces in Korea."],
+["⏰","A big deadline is coming up. How do you handle it?",[["I break it into steps and finish well before it’s due.",0],["I start early, get sidetracked, and finish just in time.",1],["I have ten great ideas and one finished piece.",2],["Deadline? What deadline? I’ll nap on it.",3]],"🏁","Patience pays off. The school opened in 1993, produced its first guide dog, Bada, in 1994, and has since provided around 320 guide dogs free of charge to people with visual impairments."],
+["💼","You worked hard for something and didn’t get it. How do you react?",[["I review what went wrong, adjust calmly and try again.",0],["I sulk a bit, have a snack, then try again.",1],["I decide it was never my thing and chase a new idea.",2],["I complain loudly, then take a nap.",3]],"🏠","Dogs that don’t pass aren’t forgotten. The school keeps them in a heated boarding kennel and runs adoption programs, so they can find loving families."]
+];
+QS.forEach(function(q,i){q[5]=String(i)});var DEFAULT_QS=JSON.parse(JSON.stringify(QS)),DEFAULT_DOGS=JSON.parse(JSON.stringify(DOGS)),perQuiz=6,snd={on:true,vol:0.6,ev:{start:{list:[]},question:{list:[{t:"pop"},{t:"boop"},{t:"sparkle"}]},fact:{list:[{t:"chime"}]},result:{list:[{t:"fanfare"}]}}},actx=null,bufs=new Map(),lastIdx={},BUILTIN=[["chime","Chime"],["pop","Pop"],["fanfare","Fanfare"],["woof","Woof"],["boop","Boop"],["sparkle","Sparkle"],["bark","Bark"],["whoosh","Whoosh"],["ding","Ding"]],EVS=[["question","“Next question” click (one plays at random)"],["start","Quiz starts (Start / Restart button)"],["fact","Fun fact appears"],["result","Result appears"]];
+var KEY="gd-quiz-v1", imgs=[null,null,null,null], sizes=[200,200,200,200], scn={};
+var st={screen:"start",i:0,order:[],picks:[],last:null};
+var app=document.getElementById("app"), topBtn=document.getElementById("restartTop");
+
+function load(){try{var d=JSON.parse(localStorage.getItem(KEY)||"null");if(d){if(Array.isArray(d.imgs))imgs=d.imgs.slice(0,8);if(Array.isArray(d.sizes))sizes=d.sizes.slice(0,8);if(d.scn&&typeof d.scn==="object"&&!Array.isArray(d.scn)){for(var kk in d.scn){if(typeof d.scn[kk]==="string"&&/^data:image\//.test(d.scn[kk]))scn[kk]=d.scn[kk]}}if(Array.isArray(d.dogs)){var cd=cleanDogs(d.dogs);if(cd.length>=2)DOGS=cd}if(d.snd&&typeof d.snd==="object")loadSnd(d.snd);if(Array.isArray(d.qs)){var cq=cleanQs(d.qs);if(cq.length)QS=cq}if(Number(d.nq)>=1)perQuiz=Math.min(40,Math.floor(Number(d.nq)))}}catch(e){}
+ fitDogArrays()}
+function cleanQs(a){var out=[],used={};
+ a.slice(0,40).forEach(function(q,i){
+  if(!Array.isArray(q)||!Array.isArray(q[2]))return;
+  var os=[];q[2].slice(0,4).forEach(function(o){if(Array.isArray(o)){var dg=Number(o[1]);os.push([String(o[0]).slice(0,200),dg>=0&&dg<DOGS.length?Math.floor(dg):0])}});
+  while(os.length<4)os.push(["",os.length%DOGS.length]);
+  var id=String(q[5]!=null?q[5]:"x"+i).replace(/[^a-zA-Z0-9_-]/g,"");if(!id||used[id])id="x"+i+"_"+out.length;used[id]=1;
+  out.push([String(q[0]||"").slice(0,8),String(q[1]||"").slice(0,300),os,String(q[3]||"").slice(0,8),String(q[4]||"").slice(0,600),id])});
+ return out}
+function fitDogArrays(){imgs=imgs.slice(0,DOGS.length);sizes=sizes.slice(0,DOGS.length);for(var k=0;k<DOGS.length;k++){if(typeof imgs[k]!=="string")imgs[k]=null;var z=Number(sizes[k]);sizes[k]=z>=100&&z<=320?z:200}}
+function cleanDogs(a){var out=[];a.slice(0,8).forEach(function(d){if(!d||typeof d!=="object")return;
+ var tr=Array.isArray(d.traits)?d.traits.slice(0,8).map(function(t){return String(t).slice(0,160)}).filter(Boolean):[];
+ out.push({name:String(d.name||"Dog").slice(0,40),breed:String(d.breed||"").slice(0,40),tier:String(d.tier||"").slice(0,40),emoji:String(d.emoji||"🐕").slice(0,8),line:String(d.line||"").slice(0,400),traits:tr})});return out}
+function dogLabel(di){return (di+1)+". "+DOGS[di].name+" ("+DOGS[di].tier+")"}
+function cleanItem(x){if(!x||typeof x!=="object")return null;
+ if(BUILTIN.some(function(b){return b[0]===x.t}))return{t:x.t};
+ if(x.t==="custom"&&typeof x.data==="string"&&/^data:audio\//.test(x.data))return{t:"custom",data:x.data,name:String(x.name||"My sound").slice(0,60)};
+ return null}
+function loadSnd(o){if(typeof o.on==="boolean")snd.on=o.on;var v=Number(o.vol);if(v>=0&&v<=1)snd.vol=v;
+ function list(c){var out=[];if(!c||typeof c!=="object")return null;
+  if(Array.isArray(c.list)){c.list.slice(0,8).forEach(function(x){var it=cleanItem(x);if(it)out.push(it)});return out}
+  if(typeof c.mode==="string"){if(c.mode==="custom"){var it=cleanItem({t:"custom",data:c.custom,name:"My sound"});if(it)out.push(it)}else if(c.mode!=="off"){var it2=cleanItem({t:c.mode});if(it2)out.push(it2)}return out}
+  return null}
+ if(o.ev&&typeof o.ev==="object"){EVS.forEach(function(e){var l=list(o.ev[e[0]]);if(l)snd.ev[e[0]].list=l})}
+ else{var l2=list(o);if(l2)snd.ev.fact.list=l2}}
+function b64buf(u){var b=atob(u.split(",")[1]),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a.buffer}
+function playItem(item){
+ try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  if(!actx)actx=new AC();if(actx.state==="suspended")actx.resume();
+  var t=actx.currentTime,v=snd.vol;
+  if(v<=0)return;
+  function note(f,st0,dur,type,f2){var o=actx.createOscillator(),g=actx.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,t+st0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+st0+dur);
+   g.gain.setValueAtTime(0.0001,t+st0);g.gain.exponentialRampToValueAtTime(Math.max(0.0002,v*0.45),t+st0+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+st0+dur);
+   o.connect(g);g.connect(actx.destination);o.start(t+st0);o.stop(t+st0+dur+0.03)}
+  if(item.t==="chime"){note(880,0,.5);note(1318,.12,.7)}
+  else if(item.t==="pop"){note(700,0,.12,"sine",150)}
+  else if(item.t==="fanfare"){note(523,0,.18,"triangle");note(659,.14,.18,"triangle");note(784,.28,.18,"triangle");note(1047,.42,.55,"triangle")}
+  else if(item.t==="woof"){note(300,0,.16,"sawtooth",110);note(270,.24,.18,"sawtooth",100)}
+  else if(item.t==="boop"){note(392,0,.16,"sine",523)}
+  else if(item.t==="sparkle"){note(1568,0,.12);note(1976,.08,.12);note(2349,.16,.3)}
+  else if(item.t==="bark"){note(220,0,.1,"square",120);note(200,.14,.12,"square",90)}
+  else if(item.t==="whoosh"){note(200,0,.3,"triangle",900)}
+  else if(item.t==="ding"){note(1047,0,.7)}
+  else if(item.t==="custom"&&item.data){
+   var play=function(buf){var src=actx.createBufferSource(),g=actx.createGain();src.buffer=buf;g.gain.value=v;src.connect(g);g.connect(actx.destination);src.start()};
+   if(bufs.has(item))play(bufs.get(item));else actx.decodeAudioData(b64buf(item.data),function(buf){bufs.set(item,buf);play(buf)},function(){})}
+ }catch(e){}}
+function playSfx(ev,force){var c=snd.ev[ev];if(!c||!c.list.length||(!force&&!snd.on))return;
+ var n=c.list.length,i=Math.floor(Math.random()*n);
+ if(n>1&&i===lastIdx[ev])i=(i+1+Math.floor(Math.random()*(n-1)))%n;
+ lastIdx[ev]=i;playItem(c.list[i])}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({imgs:imgs,sizes:sizes,scn:scn,qs:QS,nq:perQuiz,dogs:DOGS,snd:snd}))}catch(e){}}
+function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function pic(i){var s=sizes[i],e;
+ if(imgs[i]){e=el("img","pic");e.src=imgs[i];e.alt=DOGS[i].name+" the "+DOGS[i].breed;e.style.width="100%";e.style.height="auto";e.style.maxHeight="60vh";e.style.objectFit="contain"}
+ else{e=el("div","ph",DOGS[i].emoji);e.style.width=s+"px";e.style.height=s+"px"}
+ return e}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function scene(e,h,key){var d=el("div","scene");d.style.background="linear-gradient(135deg,hsl("+h+" 80% 60% / .28),hsl("+((h+50)%360)+" 80% 60% / .28))";if(key&&scn[key]){var im=el("img");im.src=scn[key];im.alt="";d.classList.add("hasimg");d.appendChild(im)}else d.appendChild(el("span",null,e));return d}
+function usable(q){return q[1].trim()&&q[2].filter(function(o){return o[0].trim()}).length>=2}
+function pool(){var p=[];QS.forEach(function(q,i){if(usable(q))p.push(i)});return p}
+function nQ(){return Math.max(1,Math.min(perQuiz,pool().length))}
+function begin(){var p=pool();if(!p.length){alert("Add at least one complete question (a question and 2+ answers) first.");return}
+ if(p.length>nQ())p=shuffle(p).slice(0,nQ());
+ st={screen:"q",i:0,order:p,picks:[],last:null};render();playSfx("start")}
+function render(){app.innerHTML="";document.querySelector(".wrap").classList.toggle("wide",st.screen==="result");topBtn.classList.toggle("hidden",st.screen==="start");
+ var c=el("div","card");app.appendChild(c);
+ if(st.screen==="start"){
+  c.classList.add("center");
+  c.appendChild(scene("🦮",30));
+  c.appendChild(el("h1",null,"Which guide dog are you?"));
+  c.appendChild(el("p",null,"Answer "+nQ()+(pool().length>nQ()?" random questions from a pool of "+pool().length:" quick questions")+" and we’ll match you to one of "+DOGS.length+" dogs."));
+  var g=el("div");g.style.cssText="display:grid;gap:4px;margin:14px 0;text-align:left";
+  DOGS.forEach(function(d,i){g.appendChild(el("div","mute",d.emoji+" "+(i+1)+". "+d.tier+" · "+d.breed+" ("+d.name+")"))});
+  c.appendChild(g);
+  var b=el("button","btn","Start quiz");b.onclick=begin;c.appendChild(b);
+ }else if(st.screen==="q"){
+  var qi=st.order[st.i],q=QS[qi];
+  var bar=el("div","bar"),fill=el("i");fill.style.width=(st.i/st.order.length*100)+"%";bar.appendChild(fill);c.appendChild(bar);
+  c.appendChild(scene(q[0],(qi*47)%360,"q"+q[5]));
+  c.appendChild(el("div","mute","Question "+(st.i+1)+" of "+st.order.length));
+  c.appendChild(el("h2",null,q[1]));
+  shuffle(q[2].filter(function(o){return o[0].trim()})).forEach(function(o){var b=el("button","opt",o[0]);b.onclick=function(){st.picks.push(o[1]);st.last=o;st.screen="fact";render();playSfx("fact")};c.appendChild(b)});
+ }else if(st.screen==="fact"){
+  var qi2=st.order[st.i],q2=QS[qi2];
+  var bar2=el("div","bar"),f2=el("i");f2.style.width=((st.i+1)/st.order.length*100)+"%";bar2.appendChild(f2);c.appendChild(bar2);
+  c.appendChild(el("div","mute","You answered:"));
+  c.appendChild(el("p",null,"“"+st.last[0]+"”"));
+  c.appendChild(scene(q2[3],(qi2*47+180)%360,"f"+q2[5]));
+  var fa=el("div","fact");fa.appendChild(el("b",null,"Fun fact"));fa.appendChild(el("span",null,q2[4]));c.appendChild(fa);
+  var last=st.i===st.order.length-1;
+  var nb=el("button","btn",last?"See my result":"Next question");
+  nb.onclick=function(){if(last){st.screen="result"}else{st.i++;st.screen="q"}render();playSfx(last?"result":"question")};c.appendChild(nb);
+ }else{
+  var sc=DOGS.map(function(){return 0});st.picks.forEach(function(p){sc[p]++});
+  var max=Math.max.apply(null,sc),win=-1;
+  for(var k=st.picks.length-1;k>=0;k--){if(sc[st.picks[k]]===max){win=st.picks[k];break}}
+  if(win<0||!DOGS[win])win=0;var d=DOGS[win];c.classList.add("center");
+  c.appendChild(el("div","mute","You are…"));
+  c.appendChild(pic(win));
+  c.appendChild(el("h1",null,d.name+" the "+d.breed));
+  c.appendChild(el("span","tier",d.tier));
+  c.appendChild(el("p",null,d.line));
+  var ul=el("ul","traits");d.traits.forEach(function(t){ul.appendChild(el("li",null,t))});c.appendChild(ul);
+  var br=el("div");br.style.marginTop="14px";
+  DOGS.forEach(function(x,i){var r=el("div","row");r.appendChild(el("span",null,x.name));var t=el("div","t"),b=el("i");b.style.width=(sc[i]/st.order.length*100)+"%";t.appendChild(b);r.appendChild(t);r.appendChild(el("span",null,String(sc[i])));br.appendChild(r)});
+  c.appendChild(br);
+  var rb=el("button","btn","Restart with new questions");rb.style.marginTop="18px";rb.onclick=restart;c.appendChild(rb);var gc=el("div","card");gc.appendChild(guide());var gr=el("div","rgrid");app.appendChild(gr);gr.appendChild(c);gr.appendChild(gc);
+ }
+ window.scrollTo(0,0)}
+function restart(){begin()}
+function guide(){
+ var g=el("div","guide");
+ g.appendChild(el("h3",null,"Want to raise a guide dog? How to become a puppy walker"));
+ g.appendChild(el("p",null,"Puppy walkers are volunteer families who raise a future guide dog at home. Per the Samsung Guide Dog School website, pups join a volunteer family at about 8 to 9 weeks old and stay for around one year, learning household routines and getting used to public places."));
+ g.appendChild(el("b",null,"The steps"));
+ var ol=el("ol");
+ ["Check the basics below to see if your household fits.",
+  "Phone interview: call 031-320-8922 (Mon–Fri, 08:00–17:00) so the school can check your qualifications.",
+  "Home interview: a trainer visits your home to assess the environment.",
+  "Wait for a place. The English page says the interview wait can be 6 months to 3 years, while the Korean page says about 4 to 6 months.",
+  "Selection: chosen families are told about one month before the puppy arrives.",
+  "Raise the puppy: follow the school’s guidelines and attend monthly education, and take your pup to shops and public transport for socialization.",
+  "After about a year, your pup returns to the school for 6 to 8 months of formal guide dog training."
+ ].forEach(function(t){ol.appendChild(el("li",null,t))});
+ g.appendChild(ol);
+ g.appendChild(el("b",null,"What the school says you need"));
+ var ul=el("ul","traits");
+ ["Live in Seoul or the capital area, and be able to drive for socialization outings.",
+  "A main caregiver with plenty of time (homemakers are prioritized; some freelancers may be restricted).",
+  "Keep the puppy indoors. Apartments are fine, and a yard needs a safety fence over 1 m high.",
+  "No dog-hair allergy or rhinitis, since the dogs shed heavily.",
+  "Be able to handle a strong, active dog that may weigh over 20 kg at 7 to 8 months.",
+  "Children: the English page says preschoolers are unsuitable (10+ recommended); the Korean page says the youngest child should be at least in 4th grade.",
+  "Other dogs: the English page says no other dog; the Korean page says it may be restricted.",
+  "Follow the school’s guidelines, or the school may change the volunteer family."
+ ].forEach(function(t){ul.appendChild(el("li",null,t))});
+ g.appendChild(ul);
+ g.appendChild(el("p","mute","The school provides education, medicine and vet bills, and guidance on feeding, toileting, bathing, health and behavior. Some consumables are not included. The English and Korean pages differ on some rules, so confirm the current requirements and wait times with the school. Other ways to help: retired guide dog home care, or kennel volunteering (age 19+, weekly for at least two months)."));
+ var a=el("a",null,"Volunteering page on guidedog.co.kr");a.href="https://www.guidedog.co.kr/eng/social/volunteering.do";a.target="_blank";a.rel="noopener";
+ var p=el("p");p.appendChild(a);g.appendChild(p);
+ return g}
+topBtn.onclick=restart;
+
+/* ---- photo uploads ---- */
+var upBox=document.getElementById("uploads"),thumbs=[],upLabels=[];
+function updThumb(i){var t=thumbs[i];t.innerHTML="";if(imgs[i]){var im=el("img");im.src=imgs[i];im.alt=DOGS[i].name;t.appendChild(im)}else t.textContent=DOGS[i].emoji}
+function resizeFile(file,cb,M0){
+ if(!file||!/^image\//.test(file.type)){alert("Please choose an image file.");return}
+ var fr=new FileReader();
+ fr.onerror=function(){alert("Couldn’t read that file.")};
+ fr.onload=function(){var im=new Image();
+  im.onerror=function(){alert("That image couldn’t be opened.")};
+  im.onload=function(){var M=1000,w=im.naturalWidth,h=im.naturalHeight,s=Math.min(1,M/Math.max(w,h));
+   var cv=document.createElement("canvas");cv.width=Math.max(1,Math.round(w*s));cv.height=Math.max(1,Math.round(h*s));
+   var cx=cv.getContext("2d");cx.fillStyle="#fff";cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);
+   cb(cv.toDataURL("image/jpeg",0.85))};
+  im.src=fr.result};
+ fr.readAsDataURL(file)}
+function buildUploads(){upBox.innerHTML="";thumbs=[];upLabels=[];
+DOGS.forEach(function(d,i){
+ var row=el("div","up"),th=el("div","th");thumbs[i]=th;row.appendChild(th);
+ var col=el("div"),lab=el("div",null,d.name+" · "+d.breed);upLabels[i]=lab;col.appendChild(lab);
+ var fi=document.createElement("input");fi.type="file";fi.accept="image/*";
+ fi.onchange=function(){var f=fi.files&&fi.files[0];if(!f)return;resizeFile(f,function(u){imgs[i]=u;save();updThumb(i);fi.value="";if(st.screen==="result")render()})};
+ col.appendChild(fi);
+ var lb=el("label","sz"),sp=el("span",null,"Size");var rg=document.createElement("input");rg.type="range";rg.min=100;rg.max=320;rg.step=10;rg.value=sizes[i];
+ var val=el("span",null,sizes[i]+"px");
+ rg.oninput=function(){sizes[i]=Number(rg.value);val.textContent=rg.value+"px";save();if(st.screen==="result")render()};
+ lb.appendChild(sp);lb.appendChild(rg);lb.appendChild(val);col.appendChild(lb);
+ row.appendChild(col);upBox.appendChild(row)});
+DOGS.forEach(function(d,i){updThumb(i)})}
+document.getElementById("clearPics").onclick=function(){imgs=DOGS.map(function(){return null});save();DOGS.forEach(function(d,i){updThumb(i)});if(st.screen==="result")render()};
+load();buildUploads();
+var scBox=document.getElementById("scenes"),scUpd={};
+function inFlow(){return st.screen==="q"||st.screen==="fact"}
+function shortT(t){return t.length>48?t.slice(0,46)+"…":t}
+function scSlot(key,label,emoji){
+ var box=el("div","slot"),th=el("div","th");
+ function upd(){th.innerHTML="";if(scn[key]){var im=el("img");im.src=scn[key];im.alt=label;th.appendChild(im)}else th.textContent=emoji}
+ scUpd[key]=upd;upd();
+ var col=el("div");col.appendChild(el("div","mute",label));
+ var fi=document.createElement("input");fi.type="file";fi.accept="image/*";
+ fi.onchange=function(){var f=fi.files&&fi.files[0];if(!f)return;resizeFile(f,function(u){scn[key]=u;save();upd();fi.value="";if(inFlow())render()},800)};
+ var rs=el("button","btn ghost sm","Reset");rs.onclick=function(){delete scn[key];save();upd();if(inFlow())render()};
+ col.appendChild(fi);col.appendChild(rs);box.appendChild(th);box.appendChild(col);return box}
+function buildScenes(){scBox.innerHTML="";scUpd={};QS.forEach(function(q,i){var row=el("div","qrow");row.appendChild(el("b",null,"Q"+(i+1)+". "+shortT(q[1]||"(untitled)")));var g=el("div","slots");g.appendChild(scSlot("q"+q[5],"Question screen",q[0]));g.appendChild(scSlot("f"+q[5],"Fun-fact screen",q[3]));row.appendChild(g);scBox.appendChild(row)})}
+buildScenes();
+document.getElementById("clearScenes").onclick=function(){scn={};save();Object.keys(scUpd).forEach(function(k){scUpd[k]()});if(inFlow())render()};
+var edBox=document.getElementById("editor");
+function toStart(){st={screen:"start",i:0,order:[],picks:[],last:null};render()}
+function field(tag,val,cb,ph,extra){var e=document.createElement(tag);if(tag==="input")e.type="text";else e.rows=2;e.value=val;if(ph)e.placeholder=ph;
+ e.addEventListener("input",function(){cb(e.value);save();if(extra)extra();if(st.screen==="start")render()});
+ e.addEventListener("change",buildScenes);return e}
+function buildEditor(){edBox.innerHTML="";
+ var top=el("div"),lb=el("label","mute","Questions per quiz: "),ni=document.createElement("input");ni.type="number";ni.min=1;ni.max=40;ni.value=perQuiz;
+ ni.addEventListener("input",function(){var v=Math.floor(Number(ni.value));if(v>=1&&v<=40){perQuiz=v;save();if(st.screen==="start")render()}});
+ lb.appendChild(ni);top.appendChild(lb);
+ top.appendChild(el("p","mute","If you have more complete questions than this number, each quiz draws a random set from the pool. Each answer’s dropdown sets which dog that answer adds a point to."));
+ edBox.appendChild(top);
+ QS.forEach(function(q,qi){
+  var card=el("div","qcard"),h=el("div","qh"),warn=el("span","warn");
+  h.appendChild(el("b",null,"Question "+(qi+1)));h.appendChild(warn);
+  function upStatus(){warn.textContent=usable(q)?"":"Not in the pool yet: needs a question and 2+ answers"}
+  var del=el("button","btn ghost sm","Delete");
+  del.onclick=function(){if(QS.length<=1){alert("Keep at least one question.");return}ask("Delete this question?",function(){QS.splice(qi,1);save();buildEditor();buildScenes();toStart()})};
+  h.appendChild(del);card.appendChild(h);
+  var r1=el("div","erow");r1.appendChild(field("input",q[0],function(v){q[0]=v.slice(0,8)},"🙂",null));r1.appendChild(field("input",q[1],function(v){q[1]=v},"Question text",upStatus));card.appendChild(r1);
+  card.appendChild(el("div","mute","Answers and the dog each one counts toward:"));
+  q[2].forEach(function(o,oi){var row=el("div","arow");row.appendChild(field("input",o[0],function(v){o[0]=v},"Answer "+(oi+1),upStatus));
+   var sel=document.createElement("select");sel.className="dogsel";DOGS.forEach(function(d,di){var op=document.createElement("option");op.value=String(di);op.textContent=dogLabel(di);sel.appendChild(op)});
+   sel.value=String(o[1]);sel.addEventListener("change",function(){o[1]=Number(sel.value);save()});row.appendChild(sel);card.appendChild(row)});
+  card.appendChild(el("div","mute","Fun fact shown after this question:"));
+  var r2=el("div","erow");r2.appendChild(field("input",q[3],function(v){q[3]=v.slice(0,8)},"💡",null));r2.appendChild(field("textarea",q[4],function(v){q[4]=v},"Fun fact text",null));card.appendChild(r2);
+  upStatus();edBox.appendChild(card)});
+ var add=el("button","btn sm","Add question");
+ add.onclick=function(){QS.push(["❓","",[["",0],["",1%DOGS.length],["",2%DOGS.length],["",3%DOGS.length]],"💡","","u"+Date.now().toString(36)+QS.length]);save();buildEditor();buildScenes();toStart()};
+ var rs=el("button","btn ghost sm","Reset questions to defaults");rs.style.marginLeft="8px";
+ rs.onclick=function(){ask("Replace all questions with the original set?",function(){QS=JSON.parse(JSON.stringify(DEFAULT_QS));QS.forEach(function(q){q[2].forEach(function(o){o[1]=o[1]%DOGS.length})});perQuiz=6;save();buildEditor();buildScenes();toStart()})};
+ var bar=el("div");bar.style.margin="12px 0";bar.appendChild(add);bar.appendChild(rs);edBox.appendChild(bar)}
+buildEditor();
+var dgBox=document.getElementById("dogEditor");
+function refreshDogUi(){
+ [].forEach.call(document.querySelectorAll("#editor select.dogsel"),function(sel){var v=sel.value;[].forEach.call(sel.options,function(op,di){if(DOGS[di])op.textContent=dogLabel(di)});sel.value=v});
+ upLabels.forEach(function(l,i){if(l&&DOGS[i])l.textContent=DOGS[i].name+" · "+DOGS[i].breed})}
+function afterDogChange(){buildDogEditor();buildUploads();buildEditor();toStart()}
+function buildDogEditor(){dgBox.innerHTML="";
+ DOGS.forEach(function(d,di){
+  var card=el("div","qcard"),h=el("div","qh");h.appendChild(el("b",null,"Dog "+(di+1)));h.appendChild(el("span","warn"));
+  var del=el("button","btn ghost sm","Remove");
+  del.onclick=function(){if(DOGS.length<=2){alert("Keep at least 2 dogs.");return}
+   ask("Remove "+d.name+"? Answers pointing to this dog will move to a neighboring dog.",function(){
+   QS.forEach(function(q){q[2].forEach(function(o){if(o[1]===di)o[1]=Math.min(di,DOGS.length-2);else if(o[1]>di)o[1]--})});
+   DOGS.splice(di,1);imgs.splice(di,1);sizes.splice(di,1);save();afterDogChange()})};
+  h.appendChild(del);card.appendChild(h);
+  var r1=el("div","erow");r1.appendChild(field("input",d.emoji,function(v){d.emoji=v.slice(0,8)},"🐕",refreshDogUi));r1.appendChild(field("input",d.name,function(v){d.name=v},"Name (e.g. Pyeongdeung)",refreshDogUi));card.appendChild(r1);
+  var r2=el("div","drow");r2.appendChild(field("input",d.breed,function(v){d.breed=v},"Breed",refreshDogUi));r2.appendChild(field("input",d.tier,function(v){d.tier=v},"Tier label (e.g. Best guide dog)",refreshDogUi));card.appendChild(r2);
+  card.appendChild(el("div","mute","Result description:"));
+  card.appendChild(field("textarea",d.line,function(v){d.line=v},"Shown on the result screen",null));
+  card.appendChild(el("div","mute","Personality traits (one per line):"));
+  var tf=field("textarea",d.traits.join("\n"),function(v){d.traits=v.split("\n").map(function(x){return x.trim()}).filter(Boolean)},"One trait per line",null);tf.rows=4;card.appendChild(tf);
+  dgBox.appendChild(card)});
+ var add=el("button","btn sm","Add dog");
+ add.onclick=function(){if(DOGS.length>=8){alert("Up to 8 dogs.");return}DOGS.push({name:"New dog",breed:"Breed",tier:"New tier",emoji:"🐕",line:"",traits:[]});imgs.push(null);sizes.push(200);save();afterDogChange()};
+ var rs=el("button","btn ghost sm","Reset dogs to defaults");rs.style.marginLeft="8px";
+ rs.onclick=function(){ask("Restore the original 4 dogs? This also removes uploaded dog photos.",function(){
+  DOGS=JSON.parse(JSON.stringify(DEFAULT_DOGS));imgs=DOGS.map(function(){return null});sizes=DOGS.map(function(){return 200});
+  QS.forEach(function(q){q[2].forEach(function(o){o[1]=o[1]%DOGS.length})});save();afterDogChange()})};
+ var bar=el("div");bar.style.margin="12px 0";bar.appendChild(add);bar.appendChild(rs);dgBox.appendChild(bar)}
+buildDogEditor();
+var sV=document.getElementById("sndVol"),sB=document.getElementById("sndBtn"),sRows=document.getElementById("sndRows"),MAX_CUSTOM=3000000,sndMsg="";
+function anyOn(){return EVS.some(function(e){return snd.ev[e[0]].list.length>0})}
+function customSize(){var n=0;EVS.forEach(function(e){snd.ev[e[0]].list.forEach(function(it){if(it.data)n+=it.data.length})});return n}
+function syncSnd(){sV.value=snd.vol;var on=snd.on&&anyOn();sB.textContent=on?"🔊":"🔇";sB.setAttribute("aria-label",on?"Mute sound":"Turn sound on")}
+function buildSndRows(){sRows.innerHTML="";if(sndMsg){var mb=el("div","fact");mb.textContent=sndMsg;sRows.appendChild(mb)}
+ EVS.forEach(function(e){var k=e[0],c=snd.ev[k],row=el("div","qcard");
+  row.appendChild(el("b",null,e[1]));
+  var chips=el("div");chips.style.margin="6px 0";
+  if(!c.list.length)chips.appendChild(el("span","mute","No sound (silent)"));
+  c.list.forEach(function(it,ii){var chip=el("span","chip");
+   var nm=it.t==="custom"?"🎵 "+it.name:(BUILTIN.filter(function(p){return p[0]===it.t})[0]||[0,it.t])[1];
+   chip.appendChild(el("span",null,nm));
+   var pb=el("button",null,"▶");pb.type="button";pb.setAttribute("aria-label","Play "+nm);pb.onclick=function(){playItem(it)};
+   var xb=el("button",null,"✕");xb.type="button";xb.setAttribute("aria-label","Remove "+nm);xb.onclick=function(){c.list.splice(ii,1);save();buildSndRows();syncSnd()};
+   chip.appendChild(pb);chip.appendChild(xb);chips.appendChild(chip)});
+  row.appendChild(chips);
+  if(c.list.length>1)row.appendChild(el("div","mute","One of these is picked at random each time.")); 
+  var r=el("div","srow"),sel=document.createElement("select");sel.className="addsnd";
+  var ph=document.createElement("option");ph.value="";ph.textContent="Add a built-in sound…";sel.appendChild(ph);
+  BUILTIN.forEach(function(p){var op=document.createElement("option");op.value=p[0];op.textContent=p[1];sel.appendChild(op)});
+  sel.onchange=function(){if(!sel.value)return;if(c.list.length>=8){alert("Up to 8 sounds per moment.");sel.value="";return}
+   var it={t:sel.value};c.list.push(it);snd.on=true;save();buildSndRows();syncSnd();playItem(it)};
+  var tb=el("button","btn ghost sm","Test");tb.onclick=function(){playSfx(k,true)};
+  r.appendChild(sel);r.appendChild(tb);row.appendChild(r);
+  var fi=document.createElement("input");fi.type="file";fi.accept="audio/*";fi.multiple=true;fi.className="hidden";var addLb=el("label","btn ghost sm","＋ Add custom sounds");addLb.style.cssText="display:inline-block;cursor:pointer";addLb.appendChild(fi);
+  fi.onchange=function(){var fs=[].slice.call(fi.files||[]),added=[],skipped=[];
+   var jobs=fs.map(function(f){return new Promise(function(res){
+    if(!/^audio\//.test(f.type)){skipped.push(f.name+" (not audio)");return res(null)}
+    if(f.size>500000){skipped.push(f.name+" (over 500 KB)");return res(null)}
+    var fr=new FileReader();fr.onerror=function(){skipped.push(f.name+" (unreadable)");res(null)};
+    fr.onload=function(){res({f:f,data:String(fr.result)})};fr.readAsDataURL(f)})});
+   Promise.all(jobs).then(function(rs){
+    rs.forEach(function(r){if(!r)return;
+     if(c.list.length>=8){skipped.push(r.f.name+" (max 8 per moment)");return}
+     if(customSize()+r.data.length>MAX_CUSTOM){skipped.push(r.f.name+" (custom sound space is full)");return}
+     c.list.push({t:"custom",data:r.data,name:r.f.name.slice(0,60)});added.push(r.f.name)});
+    sndMsg=(added.length?"Added "+added.length+": "+added.join(", ")+". ":"")+(skipped.length?"Skipped: "+skipped.join(", ")+".":"");
+    if(added.length){snd.on=true;save();syncSnd()}
+    buildSndRows();
+    if(added.length===1)playItem(c.list[c.list.length-1])})};
+  row.appendChild(el("div","mute","Or add your own sounds. Pick several files at once, or click the button again to add more (each under 500 KB):"));var cw=el("div");cw.style.margin="6px 0";cw.appendChild(addLb);row.appendChild(cw);row.appendChild(el("div","mute","Custom sounds use "+(customSize()/1e6).toFixed(1)+" MB of 3 MB, shared across all moments."));
+  sRows.appendChild(row)})}
+sV.oninput=function(){snd.vol=Number(sV.value);save()};
+sB.onclick=function(){if(!anyOn()){snd.ev.fact.list=[{t:"chime"}];snd.on=true;buildSndRows()}else snd.on=!snd.on;save();syncSnd()};
+buildSndRows();syncSnd();
+syncSnd();
+/* ---- admin gate ---- */
+var ADMIN_HASH="d8649ed9d62a4e128d3bc7c26d212b6e591b3ba923993797e22b3e2ccbd94a17",adminView=false,adminOK=false,aApp=document.getElementById("app"),aBox=document.getElementById("adminBox"),aGate=document.getElementById("adminGate"),aCred=document.getElementById("credits"),aFoot=document.getElementById("adminFoot"),aHdr=document.querySelector("header");
+try{adminOK=sessionStorage.getItem("gd-admin")==="1"}catch(e){}
+function sha(t){var b=new TextEncoder().encode("gdq-v1:"+t);return crypto.subtle.digest("SHA-256",b).then(function(h){return [].map.call(new Uint8Array(h),function(x){return ("0"+x.toString(16)).slice(-2)}).join("")})}
+function showView(){var a=adminView;
+ aApp.style.display=a?"none":"";aCred.style.display=a?"none":"";aFoot.style.display=a?"none":"";aHdr.style.display=a?"none":"";
+ aBox.classList.toggle("hidden",!(a&&adminOK));aGate.classList.toggle("hidden",!(a&&!adminOK));
+ if(a&&!adminOK)buildGate()}
+function buildGate(){aGate.innerHTML="";var c=el("div","card");c.appendChild(el("h2",null,"🔒 Admin sign-in"));
+ var pw=document.createElement("input");pw.type="password";pw.placeholder="Password";pw.autocomplete="current-password";pw.style.cssText="width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin-bottom:10px";
+ var msg=el("p","mute",""),go=el("button","btn","Unlock"),back=el("button","btn ghost","Back to quiz");back.style.marginLeft="8px";
+ function tryIt(){if(!(window.crypto&&crypto.subtle)){msg.textContent="This browser can’t check the password here.";return}
+  sha(pw.value).then(function(h){if(h===ADMIN_HASH){adminOK=true;try{sessionStorage.setItem("gd-admin","1")}catch(e){}showView()}else{msg.textContent="Wrong password.";pw.value=""}})}
+ go.onclick=tryIt;pw.addEventListener("keydown",function(e){if(e.key==="Enter")tryIt()});back.onclick=leaveAdmin;
+ c.appendChild(pw);c.appendChild(msg);c.appendChild(go);c.appendChild(back);aGate.appendChild(c);pw.focus()}
+function goAdmin(){adminView=true;try{location.hash="admin"}catch(e){}showView()}
+function leaveAdmin(){adminView=false;try{if(location.hash)location.hash=""}catch(e){}showView();toStart()}
+document.getElementById("adminExit").onclick=leaveAdmin;
+document.getElementById("adminLock").onclick=function(){adminOK=false;try{sessionStorage.removeItem("gd-admin")}catch(e){}showView()};
+document.getElementById("adminLink").onclick=function(e){e.preventDefault();goAdmin()};
+window.addEventListener("hashchange",function(){var a=location.hash==="#admin";if(a!==adminView){adminView=a;showView();if(!a)toStart()}});
+adminView=location.hash==="#admin";showView();
+render();
+</script>
+</body>
+</html>
