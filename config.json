@@ -1,0 +1,25 @@
+{
+  "dogs": {
+    "Pyeongdeung": "images/Best.jpg",
+    "Leo": "images/flunnked.jpg",
+    "Jio": "images/no_chance.jpg"
+  },
+  "scenes": {
+    "q0": "images/sunday.jpg",
+    "f0": "images/fact-1.jpg",
+    "q1": "images/drooling.jpg",
+    "f1": "images/fact-1.jpg",
+    "q2": "images/scared.jpg",
+    "f2": "images/fact-1.jpg",
+    "q3": "images/dog working.jpg",
+    "f4": "images/fact-1.jpg",
+    "q5": "images/disappointed.jpg",
+    "f5": "images/fact-1.jpg"
+  },
+  "sounds": {
+    "question": ["sound/ANMLDog_Barking dog 2 (ID 2954)_BigSoundBank.com-[AudioTrimmer.com].mp3", "sounds/woof.mp3", "sounds/ding.mp3", "sounds/Dog Barking Accents by Countries_cut_0-10-0-13.mp3", "sounds/Dog Barking Accents by Countries_cut_0-23-0-25.mp3"],
+    "start": ["sound/fanfare.mp3"],
+    "fact": ["sound/chime.mp3"],
+    "result": ["sound/fanfare.mp3"]
+  }
+}
