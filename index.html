@@ -226,7 +226,7 @@ function render(){app.innerHTML="";document.querySelector(".wrap").classList.tog
  var c=el("div","card");app.appendChild(c);
  if(st.screen==="start"){
   c.classList.add("center");
-  c.appendChild(scene("🦮",30));
+  c.appendChild(scene("🦮",30,"start"));
   c.appendChild(el("h1",null,"Which guide dog are you?"));
   c.appendChild(el("p",null,"Answer "+nQ()+(pool().length>nQ()?" random questions from a pool of "+pool().length:" quick questions")+" and we’ll match you to one of "+DOGS.length+" dogs."));
   var g=el("div");g.style.cssText="display:grid;gap:4px;margin:14px 0;text-align:left";
